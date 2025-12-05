@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/personal/login/';
+//const API_BASE_URL = 'http://127.0.0.1:8000/api/personal/login/'; // URL para desarrollo local
+const API_BASE_URL = 'https://sistemahospitalario-production.up.railway.app/api/personal/login/'; // URL para producción
 
 function LoginComponent({ onLoginSuccess }) {
     const [empleado, setEmpleado] = useState('');

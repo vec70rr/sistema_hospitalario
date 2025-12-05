@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_ORDER_URL = 'http://127.0.0.1:8000/api/expediente/ordenes/';
-const API_SPECIALTY_URL = 'http://127.0.0.1:8000/api/personal/especialidades/'; 
+//const API_ORDER_URL = 'http://127.0.0.1:8000/api/expediente/ordenes/';
+//const API_SPECIALTY_URL = 'http://127.0.0.1:8000/api/personal/especialidades/'; 
+const API_ORDER_URL = 'https://sistemahospitalario-production.up.railway.app/api/expediente/ordenes/';
+const API_SPECIALTY_URL = 'https://sistemahospitalario-production.up.railway.app/api/personal/especialidades/';
 
 function OrderForm({ patientId }) {
     const [specialties, setSpecialties] = useState([]);

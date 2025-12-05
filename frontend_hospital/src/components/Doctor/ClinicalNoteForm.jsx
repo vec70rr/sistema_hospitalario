@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_NOTE_URL = 'http://127.0.0.1:8000/api/expediente/notas/';
+//const API_NOTE_URL = 'http://127.0.0.1:8000/api/expediente/notas/';
+const API_NOTE_URL = 'https://sistemahospitalario-production.up.railway.app/api/expediente/notas/';
 
 function ClinicalNoteForm({ patientId, onNoteSubmit }) {
     const [formData, setFormData] = useState({

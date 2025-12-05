@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_OPCIONES_URL = 'http://127.0.0.1:8000/api/agenda/opciones/';
-const API_CANCEL_URL = 'http://127.0.0.1:8000/api/agenda/cancelar/';
-const API_CREAR_ELEGIDO_URL = 'http://127.0.0.1:8000/api/agenda/crear_elegido/';
+//const API_OPCIONES_URL = 'http://127.0.0.1:8000/api/agenda/opciones/';
+//const API_CANCEL_URL = 'http://127.0.0.1:8000/api/agenda/cancelar/';
+//const API_CREAR_ELEGIDO_URL = 'http://127.0.0.1:8000/api/agenda/crear_elegido/';
+const API_OPCIONES_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/opciones/';
+const API_CANCEL_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/cancelar/';
+const API_CREAR_ELEGIDO_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/crear_elegido/';
 
 function RescheduleSelect() {
     const [options, setOptions] = useState([]);

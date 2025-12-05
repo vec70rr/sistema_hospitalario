@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api/agenda/';
-const API_LIST_URL = 'http://127.0.0.1:8000/api/agenda/citas/paciente/'; // <-- Crearemos este endpoint
+//const API_BASE_URL = 'http://127.0.0.1:8000/api/agenda/';
+//const API_LIST_URL = 'http://127.0.0.1:8000/api/agenda/citas/paciente/'; // <-- Crearemos este endpoint
+const API_BASE_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/';
+const API_LIST_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/citas/paciente/'; // <-- Crearemos este endpoint
 
 function AppointmentList({ patientId }) {
     const [appointments, setAppointments] = useState([]);

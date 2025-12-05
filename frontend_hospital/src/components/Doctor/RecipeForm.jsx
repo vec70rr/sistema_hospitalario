@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_RECIPE_URL = 'http://127.0.0.1:8000/api/expediente/recetas/';
+//const API_RECIPE_URL = 'http://127.0.0.1:8000/api/expediente/recetas/';
+const API_RECIPE_URL = 'https://sistemahospitalario-production.up.railway.app/api/expediente/recetas/';
 
 const initialRecipeState = {
     diagnostico: '',

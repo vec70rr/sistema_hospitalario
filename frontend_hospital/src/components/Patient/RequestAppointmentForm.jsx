@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const API_REQUEST_URL = 'http://127.0.0.1:8000/api/agenda/solicitar/';
+//const API_REQUEST_URL = 'http://127.0.0.1:8000/api/agenda/solicitar/';
+const API_REQUEST_URL = 'https://sistemahospitalario-production.up.railway.app/api/agenda/solicitar/';
 
 function RequestAppointmentForm({ patientId, onAppointmentChange }) {
     const [loading, setLoading] = useState(false);

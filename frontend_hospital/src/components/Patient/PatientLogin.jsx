@@ -5,7 +5,8 @@ import axios from 'axios';
 // Usaremos un endpoint simple de validación si existiera, pero dado que solo 
 // implementamos la solicitud de cita, simularemos la autenticación 
 // al obtener el ID del paciente a partir del CURP.
-const API_LOOKUP_URL = 'http://127.0.0.1:8000/api/expediente/lookup/'; // <-- RUTA PÚBLICA
+//const API_LOOKUP_URL = 'http://127.0.0.1:8000/api/expediente/lookup/'; // <-- RUTA PÚBLICA
+const API_LOOKUP_URL = 'https://sistemahospitalario-production.up.railway.app/api/expediente/lookup/'; // <-- RUTA PÚBLICA
 
 function PatientLogin({ onLoginSuccess }) {
     const [curp, setCurp] = useState('');
