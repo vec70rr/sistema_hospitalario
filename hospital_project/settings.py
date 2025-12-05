@@ -28,6 +28,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wg-ru^g-jr*_7vqihx#g2
 #DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 DEBUG = True
 
+VERCEL_FRONTEND_URL = 'https://sistema-hospitalario-five.vercel.app'
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 #ALLOWED_HOSTS = ALLOWED_HOSTS_STR
@@ -82,6 +84,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     TRUSTED_RAILWAY_HOST, # <-- Incluimos el host HTTPS
+    VERCEL_FRONTEND_URL,  # <-- Incluimos el host de Vercel
 ]
 
 ROOT_URLCONF = 'hospital_project.urls'
