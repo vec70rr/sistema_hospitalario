@@ -22,7 +22,8 @@ function App() {
             // CORRECCIÓN CRÍTICA: Redirigir al sitio real de administración de Django
             // Nota: El Súper Admin tendrá que hacer login una segunda vez en la
             // página de Django Admin porque React usa Token Auth y Django Admin usa Session Auth.
-            window.location.href = 'http://127.0.0.1:8000/admin/';
+            //window.location.href = 'http://127.0.0.1:8000/admin/';
+            window.location.href = 'https://sistemahospitalario-production.up.railway.app/admin/';
         } else {
             // Médicos y otros roles (si existieran) van al panel React
             setView('doctor');
