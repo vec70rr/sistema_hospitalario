@@ -26,9 +26,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wg-ru^g-jr*_7vqihx#g2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost,0.0.0.0,sistemahospitalario-production.up.railway.app').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 #ALLOWED_HOSTS = ALLOWED_HOSTS_STR
 # Application definition
@@ -70,16 +70,19 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+TRUSTED_RAILWAY_HOST = 'https://sistemahospitalario-production.up.railway.app'
+
 CSRF_TRUSTED_ORIGINS = [
-    "https://sistemahospitalario-production.up.railway.app",
+    TRUSTED_RAILWAY_HOST
+] + [
     f"https://{host}" for host in ALLOWED_HOSTS if host
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://sistemahospitalario-production.up.railway.app",
-] + CSRF_TRUSTED_ORIGINS
+    TRUSTED_RAILWAY_HOST, # <-- Incluimos el host HTTPS
+]
 
 ROOT_URLCONF = 'hospital_project.urls'
 
