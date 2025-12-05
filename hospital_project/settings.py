@@ -98,6 +98,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hospital_project.wsgi.application'
 
+if not DEBUG:
+    # 1. Indicamos a Django que confíe en el encabezado SSL del proxy de Render
+    # Esto es CRÍTICO para reconocer la conexión como HTTPS
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+    # 2. Forzar a Django a emitir cookies solo sobre HTTPS (OBLIGATORIO)
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    
+    # Opcional, pero buena práctica: Redireccionar todo a HTTPS y configurar HSTS
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 31536000 # 1 año
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Database
 # Configuración de base de datos 
