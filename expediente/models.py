@@ -9,6 +9,8 @@ class Paciente(models.Model):
     apellidos = models.CharField(max_length=100)
     direccion = models.CharField(max_length=255, verbose_name='Dirección') # RF-001
     fecha_nacimiento = models.DateField(verbose_name='Fecha de Nacimiento') # RF-001
+    email = models.EmailField(max_length=254, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
     
     # Campo de antecedentes se omite por simplicidad inicial, pero se debe agregar
     

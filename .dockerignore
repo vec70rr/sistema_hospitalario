@@ -1,0 +1,14 @@
+# Ignorar dependencias locales y caches
+venv/
+__pycache__/
+*.pyc
+*.sqlite3
+.git/
+.gitignore
+
+# Ignorar la carpeta del frontend
+frontend_hospital/
+
+# Ignorar logs, configuraciones de IDE, etc.
+.vscode/
+.env

@@ -1,0 +1,18 @@
+# --- Etapa 1: Construcción (Generar los archivos estáticos optimizados) ---
+FROM node:20 AS build
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+# Compilar la aplicación React (esto crea la carpeta /dist)
+RUN npm run build
+
+# --- Etapa 2: Servir (Usar Nginx para servir la aplicación estática) ---
+FROM nginx:alpine
+# Configurar Nginx para manejar el routing de React
+COPY --from=build /app/dist /usr/share/nginx/html
+# Copiar una configuración de Nginx para manejar el routing SPA (Single Page Application)
+# Nota: La configuración por defecto de Nginx puede ser suficiente si tu React no usa rutas profundas
+EXPOSE 80 
+CMD ["nginx", "-g", "daemon off;"]

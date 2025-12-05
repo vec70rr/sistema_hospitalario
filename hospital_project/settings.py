@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,29 +22,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wg-ru^g-jr*_7vqihx#g2ql#k7wj_s*t_jn&sep&0ulkqkx3_m'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-wg-ru^g-jr*_7vqihx#g2ql#k7wj_s*t_jn&sep0ulkqkx3_m')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Apps Estándar
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'personal',
+    'django.contrib.staticfiles', # <--- Necesario para 'collectstatic'
+    
+    # Apps de Terceros
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    
+    # Apps del Proyecto
+    'personal',
     'expediente',
     'agenda',
-    'corsheaders',
 ]
 
 # Usa el modelo CustomUser que crearemos en personal/models.py
@@ -50,6 +57,7 @@ AUTH_USER_MODEL = 'personal.Personal'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -85,23 +95,18 @@ WSGI_APPLICATION = 'hospital_project.wsgi.application'
 
 
 # Database
-# Configuración de base de datos (Ejemplo, adapta a tu instalación de PostgreSQL)
+# Configuración de base de datos 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hospitaldb',
-        'USER': 'postgres',
-        'PASSWORD': '5414m4ndr0',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        # Usar la variable de entorno DATABASE_URL de docker-compose
+        default=os.environ.get('DATABASE_URL', 'postgres://appuser:secretpassword@db:5432/hospital_db'),
+        conn_max_age=600
+    )
 }
 
 AUTHENTICATION_BACKENDS = [
-    # Asegura que Django use el backend estándar que permite
-    # autenticación con un modelo de usuario personalizado (Personal) 
-    # y el campo de login definido (numero_empleado).
-    'django.contrib.auth.backends.ModelBackend',
+    # Asegura la autenticación del modelo de usuario personalizado
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 # Password validation
@@ -147,11 +152,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+# CRÍTICO: Directorio donde collectstatic copiará los archivos
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,0 +1,51 @@
+# docker-compose.yml (VERSIÓN CORREGIDA)
+
+version: '3.8' # Puedes eliminar esta línea, ya que Docker Compose moderno la ignora.
+
+services:
+  # 1. SERVICIO DE BASE DE DATOS (POSTGRESQL)
+  db:
+    image: postgres:15-alpine
+    container_name: hospital_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=hospital_db
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=secretpassword
+    ports:
+      - "5432:5432"
+
+  # 2. SERVICIO DE BACKEND (DJANGO/GUNICORN) - CORREGIDO
+  backend:
+    build:
+      context: .
+    container_name: hospital_backend # <-- Usamos el nombre largo para evitar ambigüedad
+    volumes:
+      - .:/usr/src/app
+      - ./staticfiles:/usr/src/app/staticfiles
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://appuser:secretpassword@db:5432/hospital_db
+      - SECRET_KEY=tu_clave_secreta_aqui 
+    # AÑADIMOS RETARDO (sleep 10) PARA ASEGURAR QUE POSTGRESQL ESTÉ LISTO ANTES DE MIGRAR.
+    command: ["sh", "-c", 
+      "sleep 10 && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py shell -c \"from hospital_project.init_data import create_initial_data; create_initial_data()\" && gunicorn hospital_project.wsgi:application --bind 0.0.0.0:8000"]
+
+  # 3. SERVICIO DE FRONTEND (REACT/NGINX) - CORREGIDO
+  frontend:
+    build:
+      context: ./frontend_hospital
+      dockerfile: Dockerfile.frontend
+    container_name: hospital_frontend
+    # CORRECCIÓN: El frontend solo necesita la DB o a nadie; no depende del backend.
+    depends_on:
+      - db 
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
