@@ -1,18 +1,27 @@
-# --- Etapa 1: Construcción (Generar los archivos estáticos optimizados) ---
+# --- Etapa 1: Construcción ---
 FROM node:20 AS build
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-# Compilar la aplicación React (esto crea la carpeta /dist)
 RUN npm run build
 
-# --- Etapa 2: Servir (Usar Nginx para servir la aplicación estática) ---
+# --- Etapa 2: Servir ---
 FROM nginx:alpine
-# Configurar Nginx para manejar el routing de React
+
+# ELIMINAMOS el error 404 de React creando una configuración básica
+# Esto le dice a Nginx: "Si no encuentras el archivo, envía todo a index.html"
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
+
 COPY --from=build /app/dist /usr/share/nginx/html
-# Copiar una configuración de Nginx para manejar el routing SPA (Single Page Application)
-# Nota: La configuración por defecto de Nginx puede ser suficiente si tu React no usa rutas profundas
-EXPOSE 80 
+
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

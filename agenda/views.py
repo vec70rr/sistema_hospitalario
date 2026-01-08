@@ -87,7 +87,8 @@ def intentar_autoasignar_cita(paciente_id):
     agendas_mg = Agenda.objects.filter(medico_id__in=medicos_generales_ids).order_by('dia')
     
     if not agendas_mg.exists():
-        return Response({"error": "E-P02", "message": "No hay agendas de Medicina General configuradas."}, status=status.HTTP_404_NOT_FOUND)
+        #return Response({"error": "E-P02", "message": "No hay agendas de Medicina General configuradas."}, status=status.HTTP_404_NOT_FOUND)
+        return None # Indica que no hay agendas MG
 
     # Iterar día por día
     dias_a_buscar = 14
@@ -156,7 +157,8 @@ class AutoAsignarCitaAPIView(generics.CreateAPIView):
             }, status=status.HTTP_201_CREATED)
         else:
             # Si nueva_cita es None
-            return Response({"error": "E-P02", "message": "No se encontraron slots disponibles para la cita."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "E-P02", 
+                            "message": "No se encontraron slots disponibles para la cita."}, status=status.HTTP_404_NOT_FOUND)
 
 class CancelarCitaAPIView(generics.UpdateAPIView):
     """
