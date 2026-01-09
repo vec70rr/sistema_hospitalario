@@ -32,7 +32,8 @@ class NotaConsultaSerializer(serializers.ModelSerializer):
             'diagnostico', 'tratamiento', 'evolucion', 
             'procedimientos', 'observaciones', 'fecha_registro'
         ]
-        read_only_fields = ['id', 'paciente', 'medico', 'medico_nombre', 'fecha_registro', 'procedimientos', 'observaciones', 'diagnostico', 'tratamiento', 'evolucion']
+        #read_only_fields = ['id', 'paciente', 'medico', 'medico_nombre', 'fecha_registro', 'procedimientos', 'observaciones', 'diagnostico', 'tratamiento', 'evolucion']
+        read_only_fields = ['id', 'medico', 'medico_nombre', 'fecha_registro']
 
     # Agregamos esta función para forzar la validación de los campos de solo lectura si es necesario
     def __init__(self, *args, **kwargs):
@@ -51,7 +52,7 @@ class DetalleMedicamentoSerializer(serializers.ModelSerializer):
         
 class RecetaDigitalSerializer(serializers.ModelSerializer):
     medico_nombre = serializers.ReadOnlyField(source='medico.get_full_name')
-    detalles = DetalleMedicamentoSerializer(many=True, read_only=True) # Campo anidado
+    detalles = DetalleMedicamentoSerializer(many=True) # Campo anidado
     
     class Meta:
         model = RecetaDigital
@@ -59,7 +60,7 @@ class RecetaDigitalSerializer(serializers.ModelSerializer):
             'id', 'paciente', 'diagnostico', 'medico_nombre', 'talla', 'peso', 
             'detalles', 'fecha_emision'
         ]
-        read_only_fields = ['id','paciente', 'medico_nombre', 'fecha_emision']
+        read_only_fields = ['id', 'medico_nombre', 'fecha_emision']
         
     def create(self, validated_data):
         # 1. Extraer los detalles del medicamento
